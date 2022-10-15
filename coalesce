@@ -1,0 +1,25 @@
+## Coalesce
+
+-- Use coalesce
+SELECT coalesce(industry, sector, 'Unknown') AS industry2,
+       count (*)
+  FROM fortune500
+ GROUP BY industry2
+ORDER BY count DESC
+LIMIT 1;
+
+## Coalesce with a self-join
+
+SELECT company_original.name, title, rank
+  FROM company AS company_original
+	   LEFT JOIN company AS company_parent
+       ON company_original.parent_id = company_parent.id
+       INNER JOIN fortune500 
+       ON coalesce(company_original.ticker, 
+                   company_parent.ticker) = 
+             fortune500.ticker
+ ORDER BY rank; 
+ 
+Previously joined the company and fortune500 tables to find out which companies are in both tables. Now, also include companies from company that are subsidiaries of Fortune 500 companies as well.
+
+To include subsidiaries, you will need to join company to itself to associate a subsidiary with its parent company's information. To do this self-join, use two different aliases for company.
