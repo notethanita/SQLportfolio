@@ -1,0 +1,10 @@
+-- Select the count of the number of rows
+SELECT count (*)
+  FROM fortune500;
+
+-- number of non null value
+SELECT count (ticker)
+FROM fortune500
+
+SELECT count (*) - count(ticker) as missing
+FROM fortune500
